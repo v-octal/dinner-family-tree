@@ -2,6 +2,8 @@
 
 A visual explorer of edible kinship. Pick any two foods. The app climbs both biological trees, rank by rank, and stops where the branches touch.
 
+Live site: <https://v-octal.github.io/dinner-family-tree/>
+
 Cabbage and broccoli meet at one species. Apple and almond meet at the rose family. A pine nut and an apple meet only in the plant kingdom.
 
 ## What it does
@@ -68,7 +70,7 @@ Vite reads `HOST` and `PORT` from the environment. The defaults are `127.0.0.1` 
 | --- | --- |
 | `npm run dev` | Start the dev server with hot reload |
 | `npm run build` | Type-check, then write the production bundle to `dist/` |
-| `npm run preview` | Serve the built bundle |
+| `npm run preview` | Serve the built bundle at the Pages sub-path |
 | `npm run lint` | Run Oxlint |
 | `npm run validate:data` | Check the dataset and the tree logic |
 
@@ -86,6 +88,29 @@ node scripts/verify-photos.mjs             # Check each URL in src/data/photos.t
 ```
 
 Both scripts send requests slowly and respect `Retry-After`. Photos come from `upload.wikimedia.org` and `thumb.wikimedia.org` only.
+
+## Deploy
+
+GitHub Pages serves the site. `.github/workflows/deploy.yml` runs the deploy.
+
+A push to `main` starts the workflow. You can also start it by hand from the Actions tab. The build job runs, in order: `npm ci`, `npm run lint`, `npm run validate:data`, and `npm run build`. It then uploads `dist/` as the Pages artifact. The deploy job publishes that artifact.
+
+Set the Pages source to **GitHub Actions** in the repository settings. This repository already uses that source.
+
+### The base path
+
+Pages serves a project site from a sub-path. This project uses `/dinner-family-tree/`.
+
+`vite.config.ts` sets `base` for production builds only. The dev server still serves from `/`. `npm run preview` serves the built bundle from the sub-path, so you can check the deployed layout on your machine.
+
+The app reads `window.location.search` and `window.location.pathname`. It therefore works under any base path, and shared links keep their sub-path.
+
+To build for a different path, set `VITE_BASE`:
+
+```bash
+VITE_BASE=/ npm run build              # Serve from a domain root
+VITE_BASE=/foods/ npm run build        # Serve from another sub-path
+```
 
 ## Project layout
 
@@ -105,6 +130,8 @@ src/
     TaxonExplorer.tsx         The detail dialog
     FoodImage.tsx             Photo with an emoji fallback
 scripts/                      Dataset validation and photo pipeline
+.github/workflows/deploy.yml  Build and publish to GitHub Pages
+vite.config.ts                Dev server, and the Pages base path
 ```
 
 ## Design and accessibility
