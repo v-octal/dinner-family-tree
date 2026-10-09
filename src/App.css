@@ -1,0 +1,923 @@
+/* ───────────────────────── Page ───────────────────────── */
+
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(20px, 4vw, 48px) clamp(16px, 4vw, 40px) 40px;
+}
+
+/* ───────────────────────── Masthead ───────────────────────── */
+
+.masthead {
+  text-align: center;
+  padding: clamp(8px, 3vw, 28px) 0 clamp(24px, 4vw, 44px);
+}
+
+.masthead-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--side-a);
+  font-weight: 600;
+}
+
+.masthead-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(42px, 8vw, 92px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-top: 14px;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+}
+
+.masthead-title-em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--ember);
+}
+
+.masthead-lede {
+  margin: 18px auto 0;
+  max-width: 46ch;
+  font-size: clamp(15px, 1.6vw, 18px);
+  color: var(--ink-2);
+}
+
+/* ───────────────────────── Pickers ───────────────────────── */
+
+.pickers {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 14px 18px;
+  align-items: end;
+  position: relative;
+  z-index: 30;
+}
+
+.picker-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 6px;
+}
+
+.icon-btn,
+.text-btn {
+  border: 1px solid var(--line-strong);
+  background: var(--paper-2);
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    transform 0.2s var(--ease-out),
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  display: inline-grid;
+  place-items: center;
+  color: var(--ink);
+}
+
+.icon-btn:hover,
+.text-btn:hover {
+  background: #fff;
+  border-color: var(--ink);
+  transform: translateY(-1px);
+}
+
+.icon-btn:active {
+  transform: rotate(180deg);
+}
+
+.text-btn {
+  padding: 6px 12px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* Combobox */
+
+.combo {
+  position: relative;
+  --side: var(--side-a);
+  --side-soft: var(--side-a-soft);
+}
+
+.combo-b {
+  --side: var(--side-b);
+  --side-soft: var(--side-b-soft);
+}
+
+.combo-label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--side);
+  margin: 0 0 8px 18px;
+}
+
+.combo-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px 6px 6px;
+  background: var(--paper-2);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  box-shadow: var(--shadow-card);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.combo-field:focus-within,
+.combo-field.is-open {
+  border-color: var(--side);
+  box-shadow:
+    0 0 0 4px var(--side-soft),
+    var(--shadow-card);
+}
+
+.combo-thumb .food-img {
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 0 0 2px var(--paper-2), 0 0 0 3px var(--side);
+}
+
+.combo-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--serif);
+  font-size: clamp(19px, 2vw, 23px);
+  font-weight: 500;
+  color: var(--ink);
+  padding: 4px 0;
+  outline: none;
+}
+
+.combo-input::placeholder {
+  color: var(--muted);
+  font-weight: 400;
+  font-style: italic;
+}
+
+.combo-toggle {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 50%;
+  background: var(--paper-3);
+  color: var(--ink-2);
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease-out), background 0.2s;
+}
+
+.combo-field.is-open .combo-toggle {
+  transform: rotate(180deg);
+  background: var(--side);
+  color: #fff;
+}
+
+.combo-list {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  max-height: min(360px, 50vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--paper-2);
+  border: 1px solid var(--line-strong);
+  border-radius: 20px;
+  box-shadow: 0 30px 60px -30px rgba(28, 42, 33, 0.5), 0 2px 6px rgba(28, 42, 33, 0.08);
+  z-index: 40;
+}
+
+.combo-list[hidden] {
+  display: none;
+}
+
+.combo-option {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 7px 10px;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.combo-option .food-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.combo-option.is-active {
+  background: var(--side-soft);
+}
+
+.combo-option.is-selected .combo-option-name {
+  color: var(--side);
+}
+
+.combo-option-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.combo-option-name {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.combo-option-sci {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.combo-option-check {
+  color: var(--side);
+  font-weight: 700;
+}
+
+.combo-empty {
+  padding: 14px 12px;
+  font-size: 14px;
+  color: var(--muted);
+  font-style: italic;
+  font-family: var(--serif);
+}
+
+/* ───────────────────────── Discovery headline ───────────────────────── */
+
+.discovery {
+  text-align: center;
+  margin: clamp(36px, 6vw, 64px) auto 10px;
+  max-width: 62ch;
+  min-height: 92px;
+}
+
+.discovery-title {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(26px, 3.8vw, 42px);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  font-variation-settings: "opsz" 72, "SOFT" 50;
+}
+
+.discovery-detail {
+  margin-top: 12px;
+  font-size: clamp(14px, 1.5vw, 16px);
+  color: var(--ink-2);
+}
+
+.discovery-steps {
+  color: var(--muted);
+}
+
+/* ───────────────────────── Tree ───────────────────────── */
+
+.tree {
+  position: relative;
+  margin-top: 18px;
+  --side: var(--ink);
+}
+
+.rank {
+  display: block;
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.is-sci {
+  font-style: italic;
+}
+
+/* Meeting point */
+
+.meet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 16px;
+}
+
+.meet-glow {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  width: min(560px, 110vw);
+  height: 360px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, rgba(201, 154, 59, 0.32), rgba(210, 85, 43, 0.08) 45%, transparent 70%);
+  filter: blur(14px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.meet-ring {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  width: 220px;
+  height: 220px;
+  margin: -110px 0 0 -110px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  opacity: 0;
+  pointer-events: none;
+  animation: ring 1.4s var(--ease-out) 0.15s 1;
+}
+
+@keyframes ring {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+.lineage {
+  position: relative;
+  z-index: 1;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  margin-bottom: 14px;
+  letter-spacing: 0.02em;
+  padding: 0 12px;
+}
+
+.lineage-sep {
+  margin: 0 6px;
+  opacity: 0.6;
+}
+
+.lineage-item {
+  font-family: var(--serif);
+  font-size: 13px;
+}
+
+.meet-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 580px;
+  padding: 24px 30px 24px;
+  text-align: center;
+  background: linear-gradient(180deg, #fffdf8 0%, var(--paper-2) 100%);
+  border: 1px solid rgba(201, 154, 59, 0.55);
+  border-radius: 26px;
+  box-shadow:
+    0 0 0 6px rgba(201, 154, 59, 0.12),
+    0 30px 70px -36px rgba(28, 42, 33, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.meet-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--ember);
+}
+
+.rank-meet {
+  margin-top: 14px;
+}
+
+.meet-name {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(34px, 5.4vw, 56px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-top: 4px;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+}
+
+.meet-common {
+  margin-top: 8px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 19px;
+  color: var(--ink-2);
+}
+
+.meet-blurb {
+  margin: 14px auto 0;
+  max-width: 46ch;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.meet-examples {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line-strong);
+}
+
+.examples-eyebrow {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.meet-example-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 18px;
+}
+
+.meet-example {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+
+.meet-example-more {
+  color: var(--muted);
+  font-style: italic;
+  font-family: var(--serif);
+}
+
+/* Example thumbnails: dashed ring marks them as "members", not picks */
+.example-thumb {
+  border-radius: 50%;
+  object-fit: cover;
+  outline: 1.5px dashed rgba(28, 42, 33, 0.4);
+  outline-offset: 2px;
+  background: var(--paper-3);
+  flex: 0 0 auto;
+}
+
+.food-img-fallback {
+  display: inline-grid;
+  place-items: center;
+  background: var(--paper-3);
+  font-size: 0.6em;
+  line-height: 1;
+}
+
+/* Fork */
+
+.fork {
+  position: relative;
+  height: 64px;
+  margin-top: -2px;
+}
+
+.fork svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.fork-knot {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 3px var(--paper), 0 0 0 4px var(--gold);
+}
+
+/* Branches */
+
+.branches {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: clamp(10px, 3vw, 40px);
+  align-items: stretch;
+}
+
+.branch {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+.branch-a {
+  --side: var(--side-a);
+  --side-soft: var(--side-a-soft);
+}
+
+.branch-b {
+  --side: var(--side-b);
+  --side-soft: var(--side-b-soft);
+}
+
+.stem-fill {
+  flex: 1 1 0;
+  min-height: 6px;
+  width: 2px;
+  background: repeating-linear-gradient(to bottom, var(--side) 0 6px, transparent 6px 11px);
+  opacity: 0.8;
+}
+
+.node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.stem {
+  display: block;
+  width: 2px;
+  height: 30px;
+  background: var(--side);
+  transform-origin: top;
+  animation: grow 0.4s var(--ease-out) both;
+}
+
+@keyframes grow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.node-card {
+  position: relative;
+  width: min(100%, 340px);
+  padding: 13px 16px 13px;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.25s var(--ease-out), border-color 0.25s;
+}
+
+.node-card::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border-radius: 50%;
+  background: var(--side);
+  box-shadow: 0 0 0 2px var(--paper-2);
+}
+
+.node-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--side);
+}
+
+.node-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.node-name {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+
+.node-common {
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+
+.examples {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 9px;
+  border-top: 1px dashed var(--line);
+}
+
+.examples-thumbs {
+  display: flex;
+  flex: 0 0 auto;
+  padding-left: 2px;
+}
+
+.examples-thumbs .example-thumb {
+  width: 30px;
+  height: 30px;
+  outline-offset: 0;
+  border: 2px solid var(--paper-2);
+  margin-left: -9px;
+}
+
+.examples-thumbs .example-thumb:first-child {
+  margin-left: 0;
+}
+
+.examples-names {
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--ink-2);
+  min-width: 0;
+}
+
+.examples-more {
+  color: var(--muted);
+}
+
+/* Food cards (the two picks) */
+
+.food-card {
+  width: min(100%, 340px);
+  background: var(--paper-2);
+  border: 1.5px solid var(--side);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 5px var(--side-soft),
+    0 30px 60px -30px color-mix(in srgb, var(--side) 60%, transparent);
+  transition: transform 0.3s var(--ease-out);
+}
+
+.food-card:hover {
+  transform: translateY(-3px);
+}
+
+.food-photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--paper-3);
+}
+
+.food-photo .food-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.food-photo .food-img-fallback {
+  font-size: 72px;
+}
+
+.food-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px 5px 8px;
+  background: rgba(253, 249, 241, 0.92);
+  backdrop-filter: blur(6px);
+  color: var(--side);
+  border-radius: 999px;
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.food-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--side);
+}
+
+.food-caption {
+  padding: 12px 16px 15px;
+}
+
+.food-name {
+  display: block;
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+.food-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-top: 5px;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.food-meta em {
+  font-family: var(--serif);
+}
+
+.food-note::before {
+  content: "·";
+  margin-right: 10px;
+  color: var(--muted);
+}
+
+/* ───────────────────────── Footer ───────────────────────── */
+
+.footer {
+  margin-top: clamp(48px, 8vw, 96px);
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.footer-note {
+  max-width: 60ch;
+}
+
+.credit {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 10.5px;
+  opacity: 0.8;
+}
+
+.credit-brand {
+  font-family: var(--serif);
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+/* ───────────────────────── Responsive ───────────────────────── */
+
+@media (max-width: 720px) {
+  .pickers {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .picker-actions {
+    flex-direction: row;
+    justify-content: center;
+    padding: 2px 0;
+  }
+
+  .combo-label {
+    margin-left: 14px;
+  }
+
+  .meet-card {
+    padding: 20px 16px 18px;
+    border-radius: 22px;
+  }
+
+  .meet-blurb {
+    font-size: 14px;
+  }
+
+  .meet-example {
+    font-size: 12.5px;
+  }
+
+  .meet-example .example-thumb {
+    width: 32px;
+    height: 32px;
+  }
+
+  .fork {
+    height: 44px;
+  }
+
+  .stem {
+    height: 22px;
+  }
+
+  .node-card {
+    padding: 10px 11px;
+    gap: 8px;
+    border-radius: 14px;
+  }
+
+  .rank {
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+  }
+
+  .node-name {
+    font-size: 16.5px;
+  }
+
+  .node-common {
+    font-size: 11.5px;
+  }
+
+  .examples {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .examples-thumbs .example-thumb {
+    width: 26px;
+    height: 26px;
+  }
+
+  .examples-names {
+    font-size: 11px;
+  }
+
+  .food-photo {
+    aspect-ratio: 1 / 1;
+  }
+
+  .food-badge {
+    font-size: 9.5px;
+    padding: 4px 8px 4px 7px;
+  }
+
+  .food-caption {
+    padding: 10px 12px 12px;
+  }
+
+  .food-name {
+    font-size: 19px;
+  }
+
+  .food-meta {
+    font-size: 12px;
+  }
+
+  .lineage {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 380px) {
+  .examples-names {
+    display: none;
+  }
+}
