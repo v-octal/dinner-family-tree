@@ -7,9 +7,10 @@ interface Props {
   taxon: Taxon;
   above: Taxon[];
   exclude: string[];
+  onExplore: (taxon: Taxon, trigger: HTMLElement) => void;
 }
 
-export function MeetingNode({ taxon, above, exclude }: Props) {
+export function MeetingNode({ taxon, above, exclude, onExplore }: Props) {
   const examples = examplesFor(taxon.id, exclude, 5);
   const total = countUnder(taxon.id);
   const extra = total - exclude.length - examples.length;
@@ -30,7 +31,15 @@ export function MeetingNode({ taxon, above, exclude }: Props) {
           {lineage.map((t, i) => (
             <span key={t.id}>
               {i > 0 && <span className="lineage-sep" aria-hidden="true">›</span>}
-              <span className="lineage-item">{t.name}</span>
+              <button
+                type="button"
+                className="lineage-item taxon-action"
+                aria-label={`Explore ${t.name}, ${t.rank.toLowerCase()}`}
+                aria-haspopup="dialog"
+                onClick={(event) => onExplore(t, event.currentTarget)}
+              >
+                {t.name}
+              </button>
             </span>
           ))}
           <span className="lineage-sep" aria-hidden="true">›</span>
@@ -61,6 +70,14 @@ export function MeetingNode({ taxon, above, exclude }: Props) {
             </ul>
           </div>
         )}
+        <span className="meet-zoom-hint" aria-hidden="true">Explore this {taxon.rank.toLowerCase()} <span>↗</span></span>
+        <button
+          type="button"
+          className="taxon-hit-area"
+          aria-label={`Explore ${taxon.name}, ${taxon.rank.toLowerCase()}`}
+          aria-haspopup="dialog"
+          onClick={(event) => onExplore(taxon, event.currentTarget)}
+        />
       </div>
     </motion.div>
   );

@@ -1,5 +1,6 @@
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { useLayoutEffect, useRef, useState } from "react";
+import type { Taxon } from "../data";
 import type { Connection } from "../lib/tree";
 import { taxonById } from "../lib/tree";
 import { MeetingNode } from "./MeetingNode";
@@ -7,6 +8,7 @@ import { FoodCard, TaxonNode } from "./TaxonNode";
 
 interface Props {
   connection: Connection;
+  onExplore: (taxon: Taxon, trigger: HTMLElement) => void;
 }
 
 interface ForkSize {
@@ -90,7 +92,7 @@ function Fork({ id }: { id: string }) {
   );
 }
 
-export function TreeDiagram({ connection }: Props) {
+export function TreeDiagram({ connection, onExplore }: Props) {
   const { a, b, meet, pathA, pathB, above } = connection;
   const exclude = [a.id, b.id];
   const topDownA = [...pathA].reverse();
@@ -100,7 +102,7 @@ export function TreeDiagram({ connection }: Props) {
     <LayoutGroup>
       <section className="tree" aria-label="How the two foods connect">
         <AnimatePresence mode="popLayout" initial={false}>
-          <MeetingNode key={meet.id} taxon={meet} above={above} exclude={exclude} />
+          <MeetingNode key={meet.id} taxon={meet} above={above} exclude={exclude} onExplore={onExplore} />
         </AnimatePresence>
 
         <Fork id={`${a.id}-${b.id}`} />
@@ -110,18 +112,18 @@ export function TreeDiagram({ connection }: Props) {
             <li className="stem-fill" aria-hidden="true" />
             <AnimatePresence mode="popLayout" initial={false}>
               {topDownA.map((t, i) => (
-                <TaxonNode key={t.id} taxon={t} side="a" exclude={exclude} index={i} total={topDownA.length} />
+                <TaxonNode key={t.id} taxon={t} side="a" exclude={exclude} index={i} total={topDownA.length} onExplore={onExplore} />
               ))}
-              <FoodCard key={`food-${a.id}`} food={a} side="a" taxon={taxonById.get(a.taxon)} />
+              <FoodCard key={`food-${a.id}`} food={a} side="a" taxon={taxonById.get(a.taxon)} onExplore={onExplore} />
             </AnimatePresence>
           </ol>
           <ol className="branch branch-b" aria-label={`Path from ${b.name} up to ${meet.name}`}>
             <li className="stem-fill" aria-hidden="true" />
             <AnimatePresence mode="popLayout" initial={false}>
               {topDownB.map((t, i) => (
-                <TaxonNode key={t.id} taxon={t} side="b" exclude={exclude} index={i} total={topDownB.length} />
+                <TaxonNode key={t.id} taxon={t} side="b" exclude={exclude} index={i} total={topDownB.length} onExplore={onExplore} />
               ))}
-              <FoodCard key={`food-${b.id}`} food={b} side="b" taxon={taxonById.get(b.taxon)} />
+              <FoodCard key={`food-${b.id}`} food={b} side="b" taxon={taxonById.get(b.taxon)} onExplore={onExplore} />
             </AnimatePresence>
           </ol>
         </div>

@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { foods, type Food } from "./data";
+import { foods, type Food, type Taxon } from "./data";
 import { connect, describeMeeting, foodById } from "./lib/tree";
 import { FoodCombobox } from "./components/FoodCombobox";
 import { TreeDiagram } from "./components/TreeDiagram";
+import { TaxonExplorer } from "./components/TaxonExplorer";
 import "./App.css";
 
 const DEFAULT_A = "apple";
@@ -33,6 +34,10 @@ function randomPair(current: [Food, Food]): [Food, Food] {
 
 export default function App() {
   const [[a, b], setPair] = useState<[Food, Food]>(readSelection);
+  const [explorer, setExplorer] = useState<{ taxon: Taxon; trigger: HTMLElement } | null>(null);
+  const explore = useCallback((taxon: Taxon, trigger: HTMLElement) => setExplorer({ taxon, trigger }), []);
+  const navigate = useCallback((taxon: Taxon) => setExplorer((current) => current ? { ...current, taxon } : null), []);
+  const dismiss = useCallback(() => setExplorer(null), []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -124,7 +129,24 @@ export default function App() {
         </AnimatePresence>
       </div>
 
-      {!same && <TreeDiagram connection={connection} />}
+      {!same && (
+        <>
+          <p className="tree-guide">Select any rank to explore its branch <span aria-hidden="true">↗</span></p>
+          <TreeDiagram connection={connection} onExplore={explore} />
+        </>
+      )}
+
+      <AnimatePresence>
+        {explorer && (
+          <TaxonExplorer
+            taxon={explorer.taxon}
+            trigger={explorer.trigger}
+            picks={[a, b]}
+            onNavigate={navigate}
+            onDismiss={dismiss}
+          />
+        )}
+      </AnimatePresence>
 
       <p className="sr-only">
         Text summary. {a.name} climbs through{" "}

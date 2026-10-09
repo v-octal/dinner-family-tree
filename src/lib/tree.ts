@@ -45,6 +45,14 @@ export function countUnder(taxonId: string, exclude: string[] = []): number {
   return ids.size;
 }
 
+export function foodsUnder(taxonId: string): Food[] {
+  return [...(descendants.get(taxonId) ?? [])];
+}
+
+export function childrenOf(taxonId: string): Taxon[] {
+  return taxa.filter((taxon) => taxon.parent === taxonId);
+}
+
 export interface Connection {
   a: Food;
   b: Food;
