@@ -810,6 +810,15 @@
   letter-spacing: 0;
   font-size: 13px;
   color: var(--ink-2);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 3px;
+  transition: color 0.2s var(--ease-out), text-decoration-color 0.2s var(--ease-out);
+}
+
+.credit-brand:hover {
+  color: var(--ink);
+  text-decoration-color: var(--gold);
 }
 
 /* ───────────────────────── Responsive ───────────────────────── */

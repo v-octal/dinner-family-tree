@@ -4,6 +4,8 @@ A visual explorer of edible kinship. Pick any two foods. The app climbs both bio
 
 Live site: <https://v-octal.github.io/dinner-family-tree/>
 
+Built with [Agent Duel](https://github.com/bottomless/agent-duel).
+
 Cabbage and broccoli meet at one species. Apple and almond meet at the rose family. A pine nut and an apple meet only in the plant kingdom.
 
 ## What it does
@@ -157,4 +159,5 @@ React 19, TypeScript, Vite 8, Motion 14, Oxlint.
 
 ## Credit
 
-Photographs via Wikimedia Commons. Built with Agent Duel.
+- Built with [Agent Duel](https://github.com/bottomless/agent-duel).
+- Photographs via Wikimedia Commons.

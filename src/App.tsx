@@ -161,7 +161,10 @@ export default function App() {
           for plants. Broad food names use representative species. Products follow their source organism.
         </p>
         <p className="credit">
-          Built with <span className="credit-brand">Agent Duel</span>
+          Built with{" "}
+          <a className="credit-brand" href="https://github.com/bottomless/agent-duel" target="_blank" rel="noopener noreferrer">
+            Agent Duel
+          </a>
         </p>
       </footer>
     </div>
