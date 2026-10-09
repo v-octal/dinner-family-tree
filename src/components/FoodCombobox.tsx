@@ -18,16 +18,16 @@ interface Props {
   onChange: (food: Food) => void;
 }
 
+function normalize(text: string): string {
+  return text.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().replace(/-/g, " ");
+}
+
 function matches(food: Food, q: string): boolean {
-  const query = q.trim().toLowerCase();
+  const query = normalize(q.trim());
   if (!query) return true;
-  const sci = taxonById.get(food.taxon)?.name.toLowerCase() ?? "";
-  const common = taxonById.get(food.taxon)?.common?.toLowerCase() ?? "";
-  return (
-    food.name.toLowerCase().includes(query) ||
-    sci.includes(query) ||
-    common.includes(query)
-  );
+  const taxon = taxonById.get(food.taxon);
+  return [food.name, food.id, food.note, taxon?.name, taxon?.common]
+    .some((text) => text !== undefined && normalize(text).includes(query));
 }
 
 export function FoodCombobox({ label, side, foods, value, onChange }: Props) {

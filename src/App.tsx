@@ -158,7 +158,7 @@ export default function App() {
       <footer className="footer">
         <p className="footer-note">
           Demo dataset of {foods.length} foods. Photographs via Wikimedia Commons. Taxonomy simplified; clades follow APG IV
-          for plants.
+          for plants. Broad food names use representative species. Products follow their source organism.
         </p>
         <p className="credit">
           Built with <span className="credit-brand">Agent Duel</span>
