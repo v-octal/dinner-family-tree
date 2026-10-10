@@ -54,6 +54,23 @@ try {
       assert.ok(["upload.wikimedia.org", "thumb.wikimedia.org"].includes(url.hostname), `Unexpected photo source: ${food.id}`);
     }
   }
+  const { dishes } = await server.ssrLoadModule("/src/data/index.ts");
+  const foodNames = new Set(foods.map(food => food.name.toLowerCase()));
+  assert.equal(new Set(dishes.map(dish => dish.id)).size, dishes.length, "Dish IDs must be unique");
+  assert.equal(new Set(dishes.map(dish => dish.name.toLowerCase())).size, dishes.length, "Dish names must be unique");
+  for (const dish of dishes) {
+    assert.match(dish.id, /^[a-z]+(?:-[a-z]+)*$/);
+    assert.ok(dish.name.trim() && dish.note.trim(), `Incomplete dish: ${dish.id}`);
+    assert.ok(!foodNames.has(dish.name.toLowerCase()), `Dish name matches a food name: ${dish.id}`);
+    assert.ok(dish.ingredients.length >= 2, `Dish needs two or more ingredients: ${dish.id}`);
+    const used = dish.ingredients.map(item => item.food);
+    assert.equal(new Set(used).size, used.length, `Repeated ingredient in dish: ${dish.id}`);
+    for (const item of dish.ingredients) {
+      assert.ok(foodIds.has(item.food), `Unknown ingredient ${item.food} in dish: ${dish.id}`);
+      if (item.as !== undefined) assert.ok(item.as.trim(), `Empty kitchen name in dish: ${dish.id}`);
+    }
+  }
+
   for (const id of Object.keys(photos)) assert.ok(foodIds.has(id), `Photo without a food: ${id}`);
   for (const id of Object.keys(taxonNotes)) assert.ok(byId.has(id), `Note without a taxon: ${id}`);
 
@@ -105,7 +122,7 @@ try {
   }
 
   const missingPhotos = foods.filter(food => !food.photo).map(food => food.id);
-  console.log(`Validated ${foods.length} foods, ${taxa.length} taxa, and ${pairs} ordered food pairs.`);
+  console.log(`Validated ${foods.length} foods, ${dishes.length} dishes, ${taxa.length} taxa, and ${pairs} ordered food pairs.`);
   console.log(`Photos: ${foods.length - missingPhotos.length}; text fallbacks: ${missingPhotos.length}.`);
   if (missingPhotos.length) console.log(`Photo fallbacks: ${missingPhotos.join(", ")}`);
 } finally {

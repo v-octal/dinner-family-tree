@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
-import type { Food, Taxon } from "../data";
+import type { Dish, Food, Taxon } from "../data";
+import { kitchenName } from "../lib/dishes";
 import { countUnder, examplesFor, isItalicRank } from "../lib/tree";
 import { FoodImage } from "./FoodImage";
 
@@ -59,8 +60,9 @@ export function TaxonNode({ taxon, side, exclude, index, total, onExplore }: Pro
   );
 }
 
-export function FoodCard({ food, side, taxon, onExplore }: {
+export function FoodCard({ food, dish, side, taxon, onExplore }: {
   food: Food;
+  dish?: Dish;
   side: "a" | "b";
   taxon?: Taxon;
   onExplore: (taxon: Taxon, trigger: HTMLElement) => void;
@@ -79,11 +81,14 @@ export function FoodCard({ food, side, taxon, onExplore }: {
           <FoodImage food={food} decorative={false} />
           <span className="food-badge">
             <span className="food-badge-dot" aria-hidden="true" />
-            Your pick
+            {dish ? `In ${dish.name}` : "Your pick"}
           </span>
         </div>
         <div className="food-caption">
           <span className="food-name">{food.name}</span>
+          {dish && kitchenName(dish, food.id) && (
+            <span className="food-kitchen-name">Used as {kitchenName(dish, food.id)}</span>
+          )}
           <span className="food-meta">
             {taxon && (
               <button

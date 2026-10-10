@@ -11,11 +11,13 @@ Cabbage and broccoli meet at one species. Apple and almond meet at the rose fami
 ## What it does
 
 - Search 350 foods in a combobox. Match on the name, the note, the scientific name, or the common name of the group.
+- Search 69 prepared dishes in the same combobox. A search for an ingredient, such as "garlic", also shows the dishes that contain it.
+- Pick a dish, then use the ingredient chips to select the ingredient to trace. The main ingredient is the default.
 - Read the result as a headline. The rank of the shared taxon decides the wording: siblings, cousins, or distant kin.
 - See an animated diagram. Two branches show the foods, and one node marks the meeting point.
 - Open any rank in a detail dialog. Read the rank description, the group note, the child groups, and the foods on that branch.
 - Swap the two foods, or draw a random pair.
-- Share a result. The URL holds both picks, for example `/?a=apple&b=almond`.
+- Share a result. The URL holds both picks, for example `/?a=apple&b=almond`. For a dish, `ad` or `bd` holds the dish, for example `/?a=milk&ad=pesto&b=almond`.
 
 ## How the connection is found
 
@@ -33,9 +35,10 @@ The data is static TypeScript. No API calls happen at runtime, except for photo 
 
 | File | Content |
 | --- | --- |
-| `src/data/types.ts` | The `Taxon`, `Food`, and `Rank` types |
+| `src/data/types.ts` | The `Taxon`, `Food`, `Dish`, `Ingredient`, and `Rank` types |
 | `src/data/taxa.ts` | 719 taxa, from domain to species |
 | `src/data/foods.ts` | 350 foods, each linked to one species |
+| `src/data/dishes.ts` | 69 dishes. Each ingredient links to one food, with an optional kitchen name such as "Parmesan" |
 | `src/data/photos.ts` | Wikimedia Commons image URLs for 340 foods |
 | `src/data/taxonDetails.ts` | One description per rank, plus notes for selected taxa |
 
@@ -76,7 +79,7 @@ Vite reads `HOST` and `PORT` from the environment. The defaults are `127.0.0.1` 
 | `npm run lint` | Run Oxlint |
 | `npm run validate:data` | Check the dataset and the tree logic |
 
-`validate:data` is the test suite for this project. It checks ID uniqueness, tree connectivity, species and genus agreement, photo URLs, and every one of the 122,500 ordered food pairs. Run it after any change to `src/data/`.
+`validate:data` is the test suite for this project. It checks ID uniqueness, tree connectivity, species and genus agreement, photo URLs, dish ingredients, and every one of the 122,500 ordered food pairs. Run it after any change to `src/data/`.
 
 ### Photo scripts
 
@@ -123,9 +126,11 @@ src/
   index.css                   Design tokens and base styles
   App.css                     Component styles
   lib/tree.ts                 Taxon lookup, paths, connection, copy
+  lib/dishes.ts               Dish lookup and the Pick model
   data/                       Static dataset (see above)
   components/
-    FoodCombobox.tsx          Accessible food search
+    FoodCombobox.tsx          Accessible food and dish search, ingredient chips
+    DishImage.tsx             Photo mosaic of the dish ingredients
     TreeDiagram.tsx           Branches and the SVG fork
     MeetingNode.tsx           The shared taxon card
     TaxonNode.tsx             One rank card, plus the food card

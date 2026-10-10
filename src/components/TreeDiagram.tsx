@@ -1,6 +1,6 @@
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { useLayoutEffect, useRef, useState } from "react";
-import type { Taxon } from "../data";
+import type { Dish, Taxon } from "../data";
 import type { Connection } from "../lib/tree";
 import { taxonById } from "../lib/tree";
 import { MeetingNode } from "./MeetingNode";
@@ -8,6 +8,7 @@ import { FoodCard, TaxonNode } from "./TaxonNode";
 
 interface Props {
   connection: Connection;
+  dishes?: [Dish | undefined, Dish | undefined];
   onExplore: (taxon: Taxon, trigger: HTMLElement) => void;
 }
 
@@ -92,7 +93,7 @@ function Fork({ id }: { id: string }) {
   );
 }
 
-export function TreeDiagram({ connection, onExplore }: Props) {
+export function TreeDiagram({ connection, dishes = [undefined, undefined], onExplore }: Props) {
   const { a, b, meet, pathA, pathB, above } = connection;
   const exclude = [a.id, b.id];
   const topDownA = [...pathA].reverse();
@@ -114,7 +115,7 @@ export function TreeDiagram({ connection, onExplore }: Props) {
               {topDownA.map((t, i) => (
                 <TaxonNode key={t.id} taxon={t} side="a" exclude={exclude} index={i} total={topDownA.length} onExplore={onExplore} />
               ))}
-              <FoodCard key={`food-${a.id}`} food={a} side="a" taxon={taxonById.get(a.taxon)} onExplore={onExplore} />
+              <FoodCard key={`food-${a.id}`} food={a} dish={dishes[0]} side="a" taxon={taxonById.get(a.taxon)} onExplore={onExplore} />
             </AnimatePresence>
           </ol>
           <ol className="branch branch-b" aria-label={`Path from ${b.name} up to ${meet.name}`}>
@@ -123,7 +124,7 @@ export function TreeDiagram({ connection, onExplore }: Props) {
               {topDownB.map((t, i) => (
                 <TaxonNode key={t.id} taxon={t} side="b" exclude={exclude} index={i} total={topDownB.length} onExplore={onExplore} />
               ))}
-              <FoodCard key={`food-${b.id}`} food={b} side="b" taxon={taxonById.get(b.taxon)} onExplore={onExplore} />
+              <FoodCard key={`food-${b.id}`} food={b} dish={dishes[1]} side="b" taxon={taxonById.get(b.taxon)} onExplore={onExplore} />
             </AnimatePresence>
           </ol>
         </div>

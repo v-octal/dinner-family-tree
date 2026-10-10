@@ -32,3 +32,19 @@ export interface Food {
   /** Short note about which part of the organism we eat. */
   note?: string;
 }
+
+export interface Ingredient {
+  /** Id of the raw food in `foods.ts`. */
+  food: string;
+  /** Kitchen name when it differs from the raw food, e.g. "Parmesan" for cow's milk. */
+  as?: string;
+}
+
+export interface Dish {
+  id: string;
+  name: string;
+  /** Cuisine or a short description. */
+  note: string;
+  /** Raw ingredients, main ingredient first. */
+  ingredients: Ingredient[];
+}
